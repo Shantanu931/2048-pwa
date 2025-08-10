@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 - Enhanced</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#764ba2">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="2048 Puzzle">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>2048</h1>
+        <p class="subtitle">Join the tiles, get to 2048!</p>
+        
+        <div class="info-bar">
+            <div id="score-container">
+                <span id="score-label">Score:</span>
+                <div id="score">
+                    <span id="score-value">0</span>
+                </div>
+            </div>
+            <div id="best-score-container">
+                <span id="best-score-label">Best:</span>
+                <div id="best-score">
+                    <span id="best-score-value">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="controls">
+            <button id="restart-btn">🔄 New Game</button>
+            <button id="undo-btn">↶ Undo</button>
+            <button id="install-btn" style="display: none;">📱 Install App</button>
+        </div>
+
+        <div id="game-board"></div>
+        
+        <div id="message"></div>
+        
+        <div class="instructions">
+            <p><strong>HOW TO PLAY:</strong> Use your arrow keys to move the tiles. Tiles with the same number merge into one when they touch. Add them up to reach 2048!</p>
+            
+            <div class="controls-hint">
+                <div class="control-item">
+                    <span class="key-hint">↑↓←→</span>
+                    <span>Arrow Keys</span>
+                </div>
+                <div class="control-item">
+                    <span class="key-hint">👆</span>
+                    <span>Swipe on Mobile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // PWA Install prompt - Wait for DOM to be ready
+        let deferredPrompt;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const installButton = document.getElementById('install-btn');
+            
+            if (installButton) {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    // Prevent the mini-infobar from appearing on mobile
+                    e.preventDefault();
+                    // Stash the event so it can be triggered later
+                    deferredPrompt = e;
+                    // Show the install button
+                    installButton.style.display = 'inline-block';
+                });
+
+                installButton.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        // Show the install prompt
+                        deferredPrompt.prompt();
+                        // Wait for the user to respond to the prompt
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(`User response to the install prompt: ${outcome}`);
+                        // Clear the deferredPrompt
+                        deferredPrompt = null;
+                        // Hide the install button
+                        installButton.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
