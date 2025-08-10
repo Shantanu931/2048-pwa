@@ -67,7 +67,7 @@
     "form_factor": "narrow"
   },
   {
-    "src": "screenshots/screenshot-wide.png",
+    "src": "screenshots/screenshot2.png",
     "sizes": "1920x1080",
     "type": "image/png",
     "form_factor": "wide"
