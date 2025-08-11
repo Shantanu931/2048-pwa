@@ -1,7 +1,6 @@
 // script.js - Enhanced 2048 game logic with animations and interactions
 const boardEl = document.getElementById('game-board');
 const scoreValueEl = document.getElementById('score-value');
-const bestScoreValueEl = document.getElementById('best-score-value');
 const messageEl = document.getElementById('message');
 
 let restartBtn = document.getElementById('restart-btn');
@@ -30,9 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         userHasInteracted = true;
         initGame();
     // Initialize best score display
-    if (bestScoreValueEl) {
-        bestScoreValueEl.textContent = bestScore;
-    }
+    // (Best score UI removed; still tracked in localStorage)
     });
     undoBtn.addEventListener('click', () => {
         userHasInteracted = true;
@@ -240,9 +237,7 @@ function updateScoreDisplay() {
     if (score > bestScore) {
         bestScore = score;
         localStorage.setItem('bestScore', bestScore.toString());
-        if (bestScoreValueEl) {
-            bestScoreValueEl.textContent = bestScore;
-        }
+        // Best score UI removed
     }
 }
 

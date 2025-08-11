@@ -14,7 +14,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <aside id="sidebar" class="sidebar">
+        <h2>How to Play</h2>
+        <p>Use your arrow keys to move the tiles. Tiles with the same number merge into one when they touch. Add them up to reach 2048!</p>
+        <div class="controls-hint">
+            <div class="control-item">
+                <span class="key-hint">↑↓←→</span>
+                <span>Arrow Keys</span>
+            </div>
+            <div class="control-item">
+                <span class="key-hint">👆</span>
+                <span>Swipe on Mobile</span>
+            </div>
+        </div>
+    </aside>
+
     <div class="container">
+        <button id="menu-btn" class="menu-btn">☰ Menu</button>
         <h1>2048</h1>
         <p class="subtitle">Join the tiles, get to 2048!</p>
         
@@ -25,12 +41,7 @@
                     <span id="score-value">0</span>
                 </div>
             </div>
-            <div id="best-score-container">
-                <span id="best-score-label">Best:</span>
-                <div id="best-score">
-                    <span id="best-score-value">0</span>
-                </div>
-            </div>
+            
         </div>
 
         <div id="controls">
@@ -43,20 +54,7 @@
         
         <div id="message"></div>
         
-        <div class="instructions">
-            <p><strong>HOW TO PLAY:</strong> Use your arrow keys to move the tiles. Tiles with the same number merge into one when they touch. Add them up to reach 2048!</p>
-            
-            <div class="controls-hint">
-                <div class="control-item">
-                    <span class="key-hint">↑↓←→</span>
-                    <span>Arrow Keys</span>
-                </div>
-                <div class="control-item">
-                    <span class="key-hint">👆</span>
-                    <span>Swipe on Mobile</span>
-                </div>
-            </div>
-        </div>
+        
     </div>
     
     <script>
@@ -65,6 +63,14 @@
         
         document.addEventListener('DOMContentLoaded', () => {
             const installButton = document.getElementById('install-btn');
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                });
+            }
             
             if (installButton) {
                 window.addEventListener('beforeinstallprompt', (e) => {
