@@ -2,16 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <title>2048 - Enhanced</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#764ba2">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="2048 Puzzle">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="manifest" href="/2048-pwa/manifest.json">
     <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Prevent any possible scrolling or bouncing */
+        html, body {
+            touch-action: none;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: auto;
+        }
+        
+        /* Prevent zoom on double tap */
+        * {
+            touch-action: manipulation;
+        }
+        
+        /* Game board specific touch handling */
+        #game-board {
+            touch-action: none !important;
+        }
+        
+        /* Prevent text selection during gameplay */
+        .container {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -60,6 +87,29 @@
     </div>
     
     <script>
+        // Prevent default touch behaviors that cause scrolling
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.closest('#game-board')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchmove', function(e) {
+            // Prevent any scrolling
+            e.preventDefault();
+        }, { passive: false });
+
+        document.addEventListener('touchend', function(e) {
+            if (e.target.closest('#game-board')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Prevent pull-to-refresh and other default behaviors
+        document.addEventListener('touchforcechange', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
         // PWA Install prompt - Wait for DOM to be ready
         let deferredPrompt;
         
